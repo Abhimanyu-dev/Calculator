@@ -42,6 +42,7 @@ body{
 
 .display{
     height: 15%;
+    width: auto;
     background-color: white;
     border: 1px solid #001e45;
     opacity: 0.5;
@@ -58,14 +59,16 @@ body{
 
 .old_input{
     height: 20%;
-    width: max-content;
     font-size: 1.5em;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
 }
 .new_input{
     height: 80%;
-    width: max-content;
     font-size: 2.5em;
     padding-top: 25px;
+    word-wrap: normal;
 }
 
 .buttons{

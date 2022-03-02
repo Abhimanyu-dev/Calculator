@@ -4,10 +4,13 @@ const height = container.offsetHeight/1.5
 const width = height/1.5
 let show = true
 var er = false
-const operator = ['+','-','/','*']
+const operator_array = ['+','-','/','*']
 
 const display_new = document.querySelector('.new_input')
 const display_old = document.querySelector('.old_input')
+
+display_new.innerHTML = ""  
+display_old.innerHTML = "" 
 
 body.style.height = height+'px'
 body.style.width = width + 'px'
@@ -32,18 +35,15 @@ function update_display(element){
     {
         if(element.textContent == '='){
             display_old.textContent = display_old.textContent.trim()+display_new.textContent.trim()
-            evaluate()
+            eval()
             display_new.textContent = display_old.textContent
             display_old.textContent = ''
-
-        
-    }else{
-        display_old.textContent = display_old.textContent.trim()+display_new.textContent.trim()
-        evaluate()
-        display_old.textContent += element.textContent 
-        display_new.textContent = ""
-    }
-        
+        }else{
+            display_old.textContent = display_old.textContent.trim()+display_new.textContent.trim() + element.textContent 
+            eval()
+            display_new.textContent = ""
+        }
+            
     }else{
         if(display_new.textContent.trim().length<=15 && show)
         display_new.textContent = display_new.textContent.trim()+element.textContent
@@ -58,10 +58,10 @@ var operators = document.querySelector('.operators')
 
 operators.style.width = 1/4*width+'px'
 
-for(i=0; i<operator.length;i++){
+for(i=0; i<operator_array.length;i++){
     button = document.createElement('div')
-    button.setAttribute('class', 'btn btn'+operator[i])
-    button.textContent = operator[i]
+    button.setAttribute('class', 'btn btn'+operator_array[i])
+    button.textContent = operator_array[i]
     button.setAttribute('style', 'height:'+btn_size+'px; width: '+btn_size+'px; border: 1px solid black;')
     button.setAttribute('onclick', 'update_display(this)')
     operators.appendChild(button)
@@ -103,115 +103,75 @@ function deleteButton(){
     }
 }
 
-function evaluate(){
-    equation = display_old.textContent
-    var num1, operator, num2, value, n1, n2
-    num1 = {
-        integer_part : '',
-        decimal_part : ''
-    }
-    num2 = {
-        integer_part : '',
-        decimal_part : ''
-    }
-    
-    operator = 0
-    decimal_num1 = false
-    decimal_num2 = false
-    negative_num1 = false
-    negative_num2 = false
+function equals(){
+    update_display(null)
+    display_new.textContent = display_old.textContent
+    display_old.textContent = ''
+}
+
+function eval(){
+    var equation = display_old.textContent.trim()
+    var num1, num2, operator, change, flag, extra=''
     change = false
-    flag = true 
+    flag = false
+    another_flag = false
+    num1 = '', num2 = ''
     for(i=0; i<equation.length; i++){
-        if(isNaN(equation[i]) && flag){
-            if(equation[i] == '.' ){
-                decimal_num1 = true 
+        if(operator_array.includes(equation[i])  && equation[i-1]!= 'e'){
+            if(flag){
+                equation = equation.replace(equation[operator], "")
+                display_old.innerHTML = equation
                 continue
             }
-            if(i==0){
-                negative_num1 = true
-                continue
-            }
-            operator = i
+            if(!another_flag){
+            operator = equation[i]
             change = true
-            flag = false
+            flag = true
             continue
+            } else{
+                extra = equation[i]
+            }
         }
         if(change){
-            if(equation[i] == '.'){
-                decimal_num2 = true
-                continue
-            }
-
-            if(equation[i] == '-'){
-                negative_num2 = true
-                continue
-            }
-
-            if(decimal_num2){
-                num2.decimal_part += equation[i]
-            }else{
-                num2.integer_part += equation[i]
-            }
+            num2 +=  equation[i]
+            flag = false
+            another_flag = true
+        } else{
+            num1 += equation[i]
 
         }
-        else{
-            if(decimal_num1){
-                num1.decimal_part += equation[i]
-            }else{
-                num1.integer_part += equation[i]
-            }
-        }
     }
+    num1 = parseFloat(num1)
+    num2 = parseFloat(num2)
 
-    if(decimal_num1){
-        n1 = parseFloat(num1.integer_part+'.'+num1.decimal_part)
-    }else{
-        n1 = parseFloat(num1.integer_part)
-    }
-    if(decimal_num2){
-        n2 = parseFloat(num2.integer_part+'.'+num2.decimal_part)
-    }else{
-        n2 = parseFloat(num2.integer_part)
-    }
 
-    console.log(equation[operator])
-    console.log(n1)
-    console.log(n2)
-
-    if(!(isNaN(n2))){
-        console.log('hi')
-        switch (equation[operator]){
+    if(!(isNaN(num2))){
+        switch (operator){
             case '+':
-                value = n1 + n2
+                value = num1 + num2
                 break
             case '-':
-                value = n1 - n2
+                value = num1 - num2
                 break
             case '/':
-                if(n2 == 0){
+                if(num2 == 0){
                     display_old.style.color = 'red'
                     display_new.style.color = 'red'
-                    display_new.style.fontSize = '2em'
+                    display_new.style.fontSize = '1.5em'
                     value = 'Undefined(Division by Zero)'
                     show = false
                     er = true 
                     break
 
                 }
-                value = n1 / n2
+                value = num1 / num2
                 break
             case '*':
-                value = n1 * n2
+                value = num1 * num2
                 break
         }
-        display_old.textContent = value
-        console.log(value)
+        display_old.textContent = value +'' + extra
     }
-}
 
-function equals(){
-    update_display(null)
-    display_new.textContent = display_old.textContent
-    display_old.textContent = ''
+
 }
