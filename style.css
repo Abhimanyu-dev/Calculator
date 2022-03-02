@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:500');
+body{
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@property --rotate {
+    syntax: "<angle>";
+    initial-value: 132deg;
+    inherits: false;
+  }
+  
+  :root {
+    --card-height: 10vh;
+    --card-width: calc(var(--card-height) * 3);
+  }
+  
+ 
+
+
+.container{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.body{
+    background-color: #00132d;
+    border: 2px solid #00193b;
+    border-radius: 10px;
+    opacity: 0.7;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 5px;
+}
+
+.display{
+    height: 15%;
+    background-color: white;
+    border: 1px solid #001e45;
+    opacity: 0.5;
+    border-radius: 10px;
+    box-shadow: rgba(100, 100, 100, 0.25) 0px 10px 25px, rgba(177, 155, 155, 0.22) 0px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 10px;
+    color: black;
+    flex-grow: 0;
+}
+
+.old_input{
+    height: 20%;
+    width: max-content;
+    font-size: 1.5em;
+}
+.new_input{
+    height: 80%;
+    width: max-content;
+    font-size: 2.5em;
+    padding-top: 25px;
+}
+
+.buttons{
+    height: 75%;
+    display: flex;
+}
+
+.numpad{
+    /* border: 2px solid black; */
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap:5px;
+    align-items: center;
+}
+.operators{
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap:5px;
+    align-items: center;
+}
+
+.btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #00377E;
+    opacity: 0.5;
+    border-radius: 10px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;   
+    transition: all 0.25s ease-in;
+}
+
+.btn:hover{
+    opacity: 1;
+}
+
+.mistake{
+    display: flex;
+    width: 100%;
+    height: 10%;
+    justify-content: space-around;
+}
+
+.clear, .delete{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid red;
+    width: 45%;
+    border-radius: 10px;
+    font-size: 1.25em;
+    color: white;
+    background-color: red;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    
+}
+
+.card {
+    background: #00132d;
+    opacity: 0.9;
+    width: var(--card-width);
+    height: var(--card-height);
+    padding: 3px;
+    position: relative;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    font-size: calc(var(--card-height)/4);
+    color: rgb(100 199 250 /0%);
+    cursor: pointer;
+    font-family: cursive;
+  }
+
+  .card:hover {
+    color: rgb(200 199 220 / 100%);
+    transition: color 1.5s;
+  }
+  .card:hover:before, .card:hover:after {
+    animation: none;
+    opacity: 0;
+  }
+  
+  
+  .card::before {
+    content: "";
+    width: 104%;
+    height: 102%;
+    border-radius: 8px;
+    background-image: linear-gradient(
+      var(--rotate)
+      , #5ddcff, #3c67e3 43%, #4e00c2);
+      position: absolute;
+      z-index: -1;
+      top: -1%;
+      left: -2%;
+      animation: spin 2.5s ease-in infinite;
+  }
+  
+  .card::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--card-height) / 6);
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    transform: scale(0.8);
+    filter: blur(calc(var(--card-height) / 6));
+    background-image: linear-gradient(
+      var(--rotate)
+      , #5ddcff, #3c67e3 43%, #4e00c2);
+      opacity: 1;
+    transition: opacity .5s;
+    animation: spin 2.5s ease-out infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      --rotate: 0deg;
+    }
+    100% {
+      --rotate: 360deg;
+    }
+  }
